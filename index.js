@@ -135,4 +135,8 @@ Array.prototype.equals = function (array) {
     this.every(function (this_i, i) { return this_i === array[i] })
 };
 
-export default PinView
+export {
+  PinView,
+  KeyboardView,
+  InputView
+}
