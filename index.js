@@ -35,7 +35,7 @@ class PinView extends React.Component {
     })
   };
 
-  keyboardOnPress = (val, password, onSuccess, onFailure) => {
+  keyboardOnPress = (val, password, onSuccess, onFailure, setPasswordLength, onSetPasswordLengthReached) => {
     if (val === this.props.deleteText) {
       this.userInput = this.userInput.slice(0, -1);
       this.setState({
@@ -45,32 +45,38 @@ class PinView extends React.Component {
         this.setDeleteButton(false);
       }
     } else {
-      if (password.length !== this.userInput.length) {
+      if ((password && password.length !== this.userInput.length) || (setPasswordLength && setPasswordLength !== this.userInput.length)) {
         this.userInput = this.userInput.concat(parseInt(val));
         this.setDeleteButton(true);
         this.setState({
           animatedInputIndex: this.state.animatedInputIndex.concat(this.userInput.indexOf(parseInt(val)))
         });
-        if (this.userInput.length === password.length) {
-          if (this.userInput.equals(password)) {
-            onSuccess()
-          } else {
-            Animated.timing(
-              // Animate value over time
-              this.state.pinViewAnim, // The value to drive
-              {
-                toValue : 1, // Animate to final value of 1
-                easing  : Easing.linear,
-                duration: 200
-              }
-            ).start(); // Start the animation
-            setTimeout(() => {
-              this.state.pinViewAnim.setValue(0)
-            }, 200);
-            this.setState({
-              statusText: 'HATA'
-            });
-            onFailure()
+        if (setPasswordLength) {
+          if (this.userInput.length === setPasswordLength) {
+            onSetPasswordLengthReached(this.userInput)
+          }
+        } else {
+          if (this.userInput.length === password.length) {
+            if (this.userInput.equals(password)) {
+              onSuccess()
+            } else {
+              Animated.timing(
+                // Animate value over time
+                this.state.pinViewAnim, // The value to drive
+                {
+                  toValue : 1, // Animate to final value of 1
+                  easing  : Easing.linear,
+                  duration: 200
+                }
+              ).start(); // Start the animation
+              setTimeout(() => {
+                this.state.pinViewAnim.setValue(0)
+              }, 200);
+              this.setState({
+                statusText: 'HATA'
+              });
+              onFailure()
+            }
           }
         }
       }
@@ -78,12 +84,13 @@ class PinView extends React.Component {
   };
 
   render() {
-    const {password, buttonTextColor, buttonBgColor, inputBgColor, onSuccess, onFailure, disabled, inputActiveBgColor, inputBgOpacity, deleteText, deletePosition} = this.props;
+    const {password, buttonTextColor, buttonBgColor, inputBgColor, onSuccess, onFailure, disabled, inputActiveBgColor, inputBgOpacity, deleteText, deletePosition, setPasswordLength, onSetPasswordLengthReached} = this.props;
     return (
       <View pointerEvents={ disabled ? "none" : undefined }>
         <InputView
           bgOpacity={ inputBgOpacity }
           password={ password }
+          setPasswordLength={ setPasswordLength }
           activeBgColor={ inputActiveBgColor }
           animatedInputIndex={ this.state.animatedInputIndex }
           pinViewAnim={ this.state.pinViewAnim }
@@ -101,6 +108,8 @@ class PinView extends React.Component {
             deletePosition={ deletePosition }
             onSuccess={ onSuccess }
             onFailure={ onFailure }
+            setPasswordLength={ setPasswordLength }
+            onSetPasswordLengthReached={ onSetPasswordLengthReached }
             animatedDeleteButtonOnPress={ this.state.animatedDeleteButtonOnPress }
             keyboardOnPress={ this.keyboardOnPress }/>
         </View>
@@ -127,9 +136,11 @@ PinView.propTypes = {
   inputBgColor      : PropTypes.string,
   inputActiveBgColor: PropTypes.string,
   inputBgOpacity    : PropTypes.number,
-  onSuccess         : PropTypes.func.isRequired,
-  onFailure         : PropTypes.func.isRequired,
-  password          : PropTypes.array.isRequired
+  onSuccess         : PropTypes.func,
+  onFailure         : PropTypes.func,
+  password          : PropTypes.array,
+  setPasswordLength : PropTypes.number,
+  onSetPasswordLengthReached : PropTypes.func,
 };
 
 Array.prototype.equals = function (array) {
