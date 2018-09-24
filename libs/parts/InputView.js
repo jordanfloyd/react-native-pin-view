@@ -1,5 +1,5 @@
 import React from 'react';
-import { Animated } from "react-native";
+import { Animated, View } from "react-native";
 
 const InputView = ({pinViewAnim, animatedInputIndex, password, bgColor, activeBgColor, styles, bgOpacity, setPasswordLength}) => {
   const tilt = pinViewAnim.interpolate({
@@ -8,28 +8,39 @@ const InputView = ({pinViewAnim, animatedInputIndex, password, bgColor, activeBg
   });
   const pw = password ? password : Array.from(new Array(setPasswordLength),(val,index)=>index);
   return (
-    <Animated.View style={ [styles[0], {
+    <Animated.View style={ [styles.passwordInputView, {
       transform: [{translateX: tilt}]
     }] }>
       {
         pw.map((val, index) => {
           if (animatedInputIndex[index] === undefined) {
             return (
-              <Animated.View
-                key={ "passwordItem-" + index }
-                style={ [styles[1], {
-                  backgroundColor: bgColor,
-                  opacity        : bgOpacity
-                }] }/>
+              <Animated.View key={ "passwordItem-" + index }>
+                <View style={styles.passwordInputViewNumberContainer}>
+                  <View style={styles.passwordInputViewItemActiveNumber} />
+                </View>
+                <View
+                  style={ [styles.passwordInputViewItem, {
+                    backgroundColor: bgColor,
+                    opacity        : bgOpacity
+                  }] }/>
+              </Animated.View>
             )
           } else {
             return (
-              <Animated.View
-                key={ "passwordItem-" + index }
-                style={ [styles[2], {
-                  backgroundColor: activeBgColor,
-                  opacity        : 1
-                }] }/>
+              <Animated.View key={ "passwordItem-" + index }>
+                <View style={styles.passwordInputViewNumberContainer}>
+                  <View style={[styles.passwordInputViewItemActiveNumber, {
+                    backgroundColor: activeBgColor,
+                    opacity: 1,
+                  }]} />
+                </View>
+                <View
+                  style={ [styles.passwordInputViewItemActive, {
+                    backgroundColor: activeBgColor,
+                    opacity        : 1
+                  }] }/>
+              </Animated.View>
             )
           }
         })

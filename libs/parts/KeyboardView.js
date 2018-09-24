@@ -1,5 +1,5 @@
 import React from 'react';
-import { Animated, FlatList, Text, TouchableOpacity } from "react-native";
+import { Animated, FlatList, Text, TouchableHighlight } from "react-native";
 
 const KeyboardView = ({keyboardOnPress, password, onSuccess, onFailure, bgColor, textColor, animatedDeleteButton, deleteText, animatedDeleteButtonOnPress, styles, deletePosition, setPasswordLength, onSetPasswordLengthReached}) => {
   const data = deletePosition === 'right' ? ["1", "2", "3", "4", "5", "6", "7", "8", "9", "-1", "0", deleteText] : ["1", "2", "3", "4", "5", "6", "7", "8", "9", deleteText, "0"];
@@ -21,8 +21,17 @@ const KeyboardView = ({keyboardOnPress, password, onSuccess, onFailure, bgColor,
       style = [styles[0]]
     }
     return (
-      <TouchableOpacity activeOpacity={ 0.85 } onPress={ () => keyboardOnPress(item, password, onSuccess, onFailure, setPasswordLength, onSetPasswordLengthReached) }
-                        disabled={ onPressActive }>
+      <TouchableHighlight style={{
+        alignItems : 'center',
+        justifyContent  : 'center',
+        height          : 70,
+        width           : 70,
+        marginHorizontal: 13,
+        marginVertical  : 7,
+        borderRadius    : 70 / 2,}}
+                          underlayColor='rgba(255, 255, 255, 0.15)'
+                          onPress={ () => keyboardOnPress(item, password, onSuccess, onFailure, setPasswordLength, onSetPasswordLengthReached) }
+                          disabled={ onPressActive }>
         <Animated.View style={ [style, {
           backgroundColor: bgColor,
         }] }>
@@ -31,7 +40,7 @@ const KeyboardView = ({keyboardOnPress, password, onSuccess, onFailure, bgColor,
             opacity: 1,
           }] }>{ item }</Text>
         </Animated.View>
-      </TouchableOpacity>
+      </TouchableHighlight>
     )
   };
   return (
