@@ -95,7 +95,7 @@ class PinView extends React.Component {
           animatedInputIndex={ this.state.animatedInputIndex }
           pinViewAnim={ this.state.pinViewAnim }
           bgColor={ inputBgColor }
-          styles={ [Styles.passwordInputView, Styles.passwordInputViewItem, Styles.passwordInputViewItemActive] }
+          styles={Styles}
         />
         <View style={ Styles.keyboardView }>
           <KeyboardView
