@@ -84,7 +84,7 @@ class PinView extends React.Component {
   };
 
   render() {
-    const {password, buttonTextColor, buttonBgColor, inputBgColor, onSuccess, onFailure, disabled, inputActiveBgColor, inputBgOpacity, deleteText, deletePosition, setPasswordLength, onSetPasswordLengthReached} = this.props;
+    const {password, buttonTextColor, buttonBgColor, inputBgColor, onSuccess, onFailure, disabled, inputActiveBgColor, inputBgOpacity, deleteText, deletePosition, setPasswordLength, onSetPasswordLengthReached, deleteComponent, animatedDelete} = this.props;
     return (
       <View pointerEvents={ disabled ? "none" : undefined }>
         <InputView
@@ -106,6 +106,7 @@ class PinView extends React.Component {
             password={ password }
             deleteText={ deleteText }
             deletePosition={ deletePosition }
+            deleteComponent={ deleteComponent }
             onSuccess={ onSuccess }
             onFailure={ onFailure }
             setPasswordLength={ setPasswordLength }
@@ -131,6 +132,8 @@ PinView.propTypes = {
   disabled          : PropTypes.bool,
   deleteText        : PropTypes.string,
   deletePosition    : PropTypes.string,
+  deleteComponent   : PropTypes.node,
+  animatedDelete    : PropTypes.bool,
   buttonBgColor     : PropTypes.string,
   buttonTextColor   : PropTypes.string,
   inputBgColor      : PropTypes.string,
