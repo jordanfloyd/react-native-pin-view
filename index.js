@@ -71,6 +71,10 @@ class PinView extends React.Component {
               ).start(); // Start the animation
               setTimeout(() => {
                 this.state.pinViewAnim.setValue(0)
+                this.userInput = []
+                this.setState({
+                  animatedInputIndex: Object.assign([])
+                })
               }, 200);
               this.setState({
                 statusText: 'HATA'
