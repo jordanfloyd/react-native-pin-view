@@ -1,5 +1,5 @@
 import React from 'react';
-import { Animated, Easing, View } from "react-native";
+import { Animated, Easing, View, ViewPropTypes } from "react-native";
 
 import KeyboardView from './libs/parts/KeyboardView'
 import InputView from './libs/parts/InputView'
@@ -90,7 +90,7 @@ class PinView extends React.Component {
   render() {
     const {password, buttonTextColor, buttonBgColor, inputBgColor, onSuccess, onFailure, disabled, inputActiveBgColor, inputBgOpacity, deleteText, deletePosition, setPasswordLength, onSetPasswordLengthReached, deleteComponent, animatedDelete} = this.props;
     return (
-      <View pointerEvents={ disabled ? "none" : undefined }>
+      <View style={this.props.style} pointerEvents={ disabled ? "none" : undefined }>
         <InputView
           bgOpacity={ inputBgOpacity }
           password={ password }
@@ -148,6 +148,7 @@ PinView.propTypes = {
   password          : PropTypes.array,
   setPasswordLength : PropTypes.number,
   onSetPasswordLengthReached : PropTypes.func,
+  style             : ViewPropTypes.style
 };
 
 Array.prototype.equals = function (array) {
