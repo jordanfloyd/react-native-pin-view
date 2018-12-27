@@ -31,6 +31,7 @@ export default StyleSheet.create({
     height: 20,
     width: 20,
     borderRadius: 10,
+    overflow: 'hidden'
   },
   // KeyboardView
   keyboardView               : {
